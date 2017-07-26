@@ -8,6 +8,9 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.io.IOException;
+
 /**
  * Created by Alexander on 2017-07-12.
  */
@@ -61,6 +64,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
                 playerPosition.set((int)event.getX(), (int)event.getY());
+                new QuoteClient().execute();
+
+
         }
 
 
