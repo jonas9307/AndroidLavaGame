@@ -13,10 +13,19 @@ public class RectPlayer implements GameObject{
 
     private Rect rect;
     private int color;
+    private int id;
 
     public RectPlayer(Rect rect, int color) {
         this.rect = rect;
         this.color = color;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -37,6 +46,14 @@ public class RectPlayer implements GameObject{
             position.x + rect.width()  / 2,
             position.y + rect.height() / 2
         );
+    }
 
+    public int getPositionX() {
+        return rect.centerX();
+    }
+
+
+    public int getPositionY() {
+        return rect.centerY();
     }
 }

@@ -1,7 +1,7 @@
 package com.example.jonas.androidlavagame;
 
 /**
- * Created by Alexander on 2017-07-26.
+ * Created by Alexander on 2017-07-30.
  */
 
 import android.os.AsyncTask;
@@ -10,7 +10,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class QuoteClient extends AsyncTask<String, Integer, Boolean> {
+public class Client extends AsyncTask<String, Integer, Boolean> {
     @Override
     protected Boolean doInBackground(String... strings) {
 
@@ -28,7 +28,7 @@ public class QuoteClient extends AsyncTask<String, Integer, Boolean> {
         byte[] buf = new byte[256];
         InetAddress address = null;
         try {
-            address = InetAddress.getByName("46.239.104.90");
+            address = InetAddress.getByName("albu9304");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

@@ -1,16 +1,22 @@
 package com.example.jonas.androidlavagame;
 
 /**
- * Created by Alexander on 2017-07-26.
+ * Created by Alexander on 2017-07-30.
  */
-
 import android.os.AsyncTask;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class QuoteClient extends AsyncTask<String, Integer, Boolean> {
+public class ClientConnection extends AsyncTask<String, Integer, Boolean> {
+
+    private RectPlayer player;
+
+    public ClientConnection(RectPlayer player) {
+        this.player = player;
+    }
+
     @Override
     protected Boolean doInBackground(String... strings) {
 
@@ -25,10 +31,10 @@ public class QuoteClient extends AsyncTask<String, Integer, Boolean> {
 
         // send request
         System.out.println(" // send request");
-        byte[] buf = new byte[256];
+        byte[] buf = new byte[0];
         InetAddress address = null;
         try {
-            address = InetAddress.getByName("46.239.104.90");
+            address = InetAddress.getByName("192.168.1.2");
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -40,6 +46,7 @@ public class QuoteClient extends AsyncTask<String, Integer, Boolean> {
         }
 
         // get response
+        buf = new byte[1];
         packet = new DatagramPacket(buf, buf.length);
         try {
             socket.receive(packet);
@@ -49,7 +56,8 @@ public class QuoteClient extends AsyncTask<String, Integer, Boolean> {
 
         // display response
         String received = new String(packet.getData(), 0, packet.getLength());
-        System.out.println("Quote of the Moment: " + received);
+        player.setId(Integer.valueOf(received));
+        System.out.println("Player id: " + received);
 
         socket.close();
         return null;

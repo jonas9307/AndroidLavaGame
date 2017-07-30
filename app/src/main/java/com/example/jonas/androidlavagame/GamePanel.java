@@ -10,6 +10,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alexander on 2017-07-12.
@@ -18,7 +20,7 @@ import java.io.IOException;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
 
-
+    private List<RectPlayer> enemyPlayers = new ArrayList<RectPlayer>();
     private RectPlayer player;
     private Point playerPosition;
 
@@ -31,6 +33,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         player = new RectPlayer(new Rect(100, 100, 200, 200), Color.rgb(255, 0, 0));
         playerPosition = new Point(150, 150);
+
+        ClientConnection clientConnection = new ClientConnection(player);
+        clientConnection.execute();
 
         setFocusable(true);
     }
@@ -64,8 +69,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
                 playerPosition.set((int)event.getX(), (int)event.getY());
-                new QuoteClient().execute();
-
+                //new QuoteClient().execute();
 
         }
 
@@ -76,7 +80,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        player.update(playerPosition); 
+        player.update(playerPosition);
+        new ClientUpdate(player, enemyPlayers).execute();
     }
 
     @Override
@@ -86,5 +91,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawColor(Color.WHITE);
 
         player.draw(canvas);
+        for(RectPlayer enemyPlayer : enemyPlayers) {
+            enemyPlayer.draw(canvas);
+        }
     }
 }
