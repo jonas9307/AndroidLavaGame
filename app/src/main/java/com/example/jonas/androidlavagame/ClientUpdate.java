@@ -82,7 +82,7 @@ public class ClientUpdate extends AsyncTask<String, Integer, Boolean> {
                 ep.update(p);
             } else {
                 enemyPlayers.put(String.valueOf(String.valueOf(id)), new RectPlayer(
-                    new Rect(0, 0, 200, 200), Constants.COLORS[id]
+                    new Rect(100, 100, 200, 200), Constants.COLORS[id]
                 ));
                 enemyPlayers.get(String.valueOf(id)).update(new Point(x, y));
             }
