@@ -16,9 +16,9 @@ import java.util.*;
 public class ClientUpdate extends AsyncTask<String, Integer, Boolean> {
 
     private RectPlayer player;
-    private List<RectPlayer> enemyPlayers;
+    private HashMap<String, RectPlayer> enemyPlayers;
 
-    public ClientUpdate(RectPlayer player, List<RectPlayer> enemyPlayers) {
+    public ClientUpdate(RectPlayer player, HashMap<String, RectPlayer> enemyPlayers) {
         this.player = player;
         this.enemyPlayers = enemyPlayers;
     }
@@ -64,23 +64,27 @@ public class ClientUpdate extends AsyncTask<String, Integer, Boolean> {
 
         // display response
         String received = new String(packet.getData(), 0, packet.getLength());
+        if(received.equals("")) {
+            socket.close();
+            return null;
+        }
         String[] stringArray = received.split(",");
         RectPlayer ep = null;
         int id, x, y, n;
-        for (int i = 0; i < enemyPlayers.size(); i += 3) {
+        for (int i = 0; i < stringArray.length; i += 3) {
             id = Integer.valueOf(stringArray[i]);
             x = Integer.valueOf(stringArray[i+1]);
             y = Integer.valueOf(stringArray[i+2]);
-            n = enemyPlayers.size();
-            if (id > n - 1) {
-                ep = enemyPlayers.get(id);
+            //n = enemyPlayers.size();
+            if (enemyPlayers.containsKey(String.valueOf(id))) {
+                ep = enemyPlayers.get(String.valueOf(id));
                 Point p = new Point(x, y);
                 ep.update(p);
             } else {
-                enemyPlayers.add(new RectPlayer(
+                enemyPlayers.put(String.valueOf(String.valueOf(id)), new RectPlayer(
                     new Rect(0, 0, 200, 200), Constants.COLORS[id]
                 ));
-                enemyPlayers.get(id).update(new Point(x, y));
+                enemyPlayers.get(String.valueOf(id)).update(new Point(x, y));
             }
         }
 

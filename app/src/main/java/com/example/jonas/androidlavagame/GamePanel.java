@@ -11,7 +11,9 @@ import android.view.SurfaceView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Alexander on 2017-07-12.
@@ -20,7 +22,7 @@ import java.util.List;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
 
-    private List<RectPlayer> enemyPlayers = new ArrayList<RectPlayer>();
+    private HashMap<String, RectPlayer> enemyPlayers = new HashMap<String, RectPlayer>();
     private RectPlayer player;
     private Point playerPosition;
 
@@ -91,8 +93,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawColor(Color.WHITE);
 
         player.draw(canvas);
-        for(RectPlayer enemyPlayer : enemyPlayers) {
-            enemyPlayer.draw(canvas);
+        for(Map.Entry<String, RectPlayer> entry : enemyPlayers.entrySet()) {
+            entry.getValue().draw(canvas);
         }
     }
 }
