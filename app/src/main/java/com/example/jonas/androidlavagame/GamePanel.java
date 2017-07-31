@@ -33,7 +33,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         thread = new MainThread(getHolder(), this);
 
-        player = new RectPlayer(new Rect(100, 100, 200, 200), Color.rgb(255, 0, 0));
+        player = new RectPlayer(new Rect(100, 100, 200, 200), Color.rgb(200, 200, 70));
         playerPosition = new Point(150, 150);
 
         ClientConnection clientConnection = new ClientConnection(player);
