@@ -15,19 +15,21 @@ import android.view.SurfaceView;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
 
-
+    private Joystick joystick;
     private RectPlayer player;
     private Point playerPosition;
 
+    private boolean joystickPressed = false;
+
     public GamePanel(Context context) {
         super(context);
-
         getHolder().addCallback(this);
 
         thread = new MainThread(getHolder(), this);
 
-        player = new RectPlayer(new Rect(100, 100, 200, 200), Color.rgb(255, 0, 0));
-        playerPosition = new Point(150, 150);
+        joystick = new Joystick(200, 200, 100);
+        player = new RectPlayer(new Rect(400, 400, 200, 200), Color.rgb(255, 0, 0));
+        //playerPosition = new Point(150, 150);
 
         setFocusable(true);
     }
@@ -57,20 +59,30 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        System.out.println(event.getAction());
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                joystickPressed = joystick.isPressed((int)event.getX(), (int)event.getY());
+                return true;
             case MotionEvent.ACTION_MOVE:
-                playerPosition.set((int)event.getX(), (int)event.getY());
+                if(joystickPressed) {
+                    player.setVelocity(joystick.getVelocityX((int)event.getX()), joystick.getVelocityY((int)event.getY()));
+                    //System.out.println("JoystickPressed = true");
+                }
+                return true;
+               // playerPosition.set((int)event.getX(), (int)event.getY());
+            case MotionEvent.ACTION_UP:
+                joystickPressed = false;
+                player.setVelocity(0.0, 0.0);
+                System.out.println("AcTION_UP: " + MotionEvent.ACTION_UP + ", joystickPressed = " + joystickPressed);
+                return true;
         }
-
-
-
         return true;
         //return super.onTouchEvent(event);
     }
 
     public void update() {
-        player.update(playerPosition); 
+        player.update();
     }
 
     @Override
@@ -80,5 +92,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawColor(Color.WHITE);
 
         player.draw(canvas);
+        joystick.draw(canvas);
     }
 }
