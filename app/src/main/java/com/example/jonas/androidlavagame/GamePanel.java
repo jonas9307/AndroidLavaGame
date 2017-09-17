@@ -17,7 +17,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     private Joystick joystick;
     private RectPlayer player;
-    private Point playerPosition;
 
     private boolean joystickPressed = false;
 
@@ -27,8 +26,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         thread = new MainThread(getHolder(), this);
 
-        joystick = new Joystick(200, 200, 100);
-        player = new RectPlayer(new Rect(400, 400, 200, 200), Color.rgb(255, 0, 0));
+        joystick = new Joystick(300, 300, 100, 50);
+        player = new RectPlayer(new Rect(1000, 1000, 900, 900), Color.rgb(255, 0, 0));
         //playerPosition = new Point(150, 150);
 
         setFocusable(true);
@@ -59,22 +58,25 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        System.out.println(event.getAction());
+        //System.out.println(event.getAction());
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 joystickPressed = joystick.isPressed((int)event.getX(), (int)event.getY());
                 return true;
             case MotionEvent.ACTION_MOVE:
                 if(joystickPressed) {
-                    player.setVelocity(joystick.getVelocityX((int)event.getX()), joystick.getVelocityY((int)event.getY()));
+                    joystick.setVelocity((int)event.getX(), (int)event.getY());
+                    joystick.updateInnerCircleCenterPosition();
+                    player.setVelocity(joystick);
                     //System.out.println("JoystickPressed = true");
                 }
                 return true;
                // playerPosition.set((int)event.getX(), (int)event.getY());
             case MotionEvent.ACTION_UP:
                 joystickPressed = false;
-                player.setVelocity(0.0, 0.0);
-                System.out.println("AcTION_UP: " + MotionEvent.ACTION_UP + ", joystickPressed = " + joystickPressed);
+                joystick.setVelocityZero();
+                joystick.updateInnerCircleCenterPosition();
+                player.setVelocity(joystick);
                 return true;
         }
         return true;

@@ -15,7 +15,7 @@ public class RectPlayer implements GameObject{
     private int color;
     private double vx, vy;
     private double x, y;
-    private static final double MAX_SPEED = 10.0; // pixels per update
+    private static final double MAX_SPEED = 22.0; // pixels per update
 
     public RectPlayer(Rect rect, int color) {
         this.rect = rect;
@@ -29,14 +29,13 @@ public class RectPlayer implements GameObject{
         canvas.drawRect(rect, paint);
     }
 
-    public void setVelocity(double vx, double vy) {
-        this.vx = vx;
-        this.vy = vy;
+    public void setVelocity(Joystick joystick) {
+        vx = joystick.getVelocityX()/(2*joystick.getOuterCircleRadius());
+        vy = joystick.getVelocityY()/(2*joystick.getOuterCircleRadius());
     }
 
     @Override
     public void update() {
-
         x = (double) (x + vx*MAX_SPEED);
         y = (double) (y + vy*MAX_SPEED);
         updateRect();
