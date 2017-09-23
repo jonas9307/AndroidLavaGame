@@ -5,29 +5,39 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
+
 /**
  * Created by Alexander on 2017-07-12.
  */
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
-
     private Joystick joystick;
     private RectPlayer player;
-
+    private Map map;
+    private int width;
+    private int height;
     private boolean joystickPressed = false;
 
     public GamePanel(Context context) {
         super(context);
         getHolder().addCallback(this);
-
         thread = new MainThread(getHolder(), this);
-
         joystick = new Joystick(300, 300, 100, 50);
         player = new RectPlayer(new Rect(1000, 1000, 900, 900), Color.rgb(255, 0, 0));
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
+        map = new Map(context, width/128, height/128);
         //playerPosition = new Point(150, 150);
 
         setFocusable(true);
@@ -90,9 +100,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-
         canvas.drawColor(Color.WHITE);
-
+        map.draw(canvas);
         player.draw(canvas);
         joystick.draw(canvas);
     }
