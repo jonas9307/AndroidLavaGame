@@ -11,15 +11,17 @@ import android.graphics.Rect;
 
 public class RectPlayer implements GameObject{
 
-    private Rect rect;
     private int color;
+    private int cx;
+    private int cy;
     private double vx, vy;
     private double x, y;
     private static final double MAX_SPEED = 22.0; // pixels per update
 
-    public RectPlayer(Rect rect, int color) {
-        this.rect = rect;
+    public RectPlayer(int color, int screenWidth, int screenHeight) {
         this.color = color;
+        this.cx = screenWidth/2;
+        this.cy = screenHeight/2;
     }
 
     @Override
@@ -27,7 +29,7 @@ public class RectPlayer implements GameObject{
         Paint paint = new Paint();
         paint.setColor(color);
         //canvas.drawRect(rect, paint);
-        canvas.drawCircle(500, 500, 80, paint);
+        canvas.drawCircle(cx, cy, 50, paint);
     }
 
     public void setVelocity(Joystick joystick) {
@@ -39,29 +41,8 @@ public class RectPlayer implements GameObject{
     public void update() {
         x = (double) (x + vx*MAX_SPEED);
         y = (double) (y + vy*MAX_SPEED);
-        //updateRect();
     }
-    /*
-    public void updateRect() {
-        rect.set(
-            (int) (x - (double)rect.width()  / 2.0),
-            (int) (y - (double)rect.height() / 2.0),
-            (int) (x + (double)rect.width()  / 2.0),
-            (int) (y + (double)rect.height() / 2.0)
-        );
-    }
-    */
-    /*
-    public void update(Point position) {
-        rect.set(
-            position.x - rect.width()  / 2,
-            position.y - rect.height() / 2,
-            position.x + rect.width()  / 2,
-            position.y + rect.height() / 2
-        );
 
-    }
-    */
     public double getX() {
         return x;
     }

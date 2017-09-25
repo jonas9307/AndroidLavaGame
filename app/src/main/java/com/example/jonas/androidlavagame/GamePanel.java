@@ -32,14 +32,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
-        joystick = new Joystick(300, 300, 100, 50);
-        player = new RectPlayer(new Rect(1000, 1000, 900, 900), Color.rgb(255, 0, 0));
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         width = size.x;
         height = size.y;
+        joystick = new Joystick(300, 300, 100, 50);
+        player = new RectPlayer(Color.rgb(255, 0, 0), width, height);
         level = new Level("testLevel");
         map = new Map(context, level);
         tileMap = map.getTileMap();

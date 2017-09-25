@@ -26,16 +26,13 @@ public class Screen {
         1. Check if tile is left of screen
             1.1 if left of screen, check if on screen
         */
-        top = (int)player.getX();
+        top = (int)player.getY();
         int bot = top + height - 1;
-        left = (int)player.getY();
+        left = (int)player.getX();
         int right = left + width - 1;
         int nRows = tileMap.length;
         int nCols = tileMap[0].length;
 
-        int xPixels = 0;
-        int yPixels = 0;
-        
         for (int i = 0; i < nRows; i++) {
 
             int tileTop = i*128;
