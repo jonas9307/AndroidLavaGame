@@ -26,7 +26,8 @@ public class RectPlayer implements GameObject{
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(color);
-        canvas.drawRect(rect, paint);
+        //canvas.drawRect(rect, paint);
+        canvas.drawCircle(500, 500, 80, paint);
     }
 
     public void setVelocity(Joystick joystick) {
@@ -38,8 +39,9 @@ public class RectPlayer implements GameObject{
     public void update() {
         x = (double) (x + vx*MAX_SPEED);
         y = (double) (y + vy*MAX_SPEED);
-        updateRect();
+        //updateRect();
     }
+    /*
     public void updateRect() {
         rect.set(
             (int) (x - (double)rect.width()  / 2.0),
@@ -48,7 +50,7 @@ public class RectPlayer implements GameObject{
             (int) (y + (double)rect.height() / 2.0)
         );
     }
-
+    */
     /*
     public void update(Point position) {
         rect.set(
@@ -60,4 +62,10 @@ public class RectPlayer implements GameObject{
 
     }
     */
+    public double getX() {
+        return x;
+    }
+    public double getY() {
+        return y;
+    }
 }

@@ -20,7 +20,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
     private Joystick joystick;
     private RectPlayer player;
+    private Level level;
     private Map map;
+    private Tile[][] tileMap;
+    private Screen screen;
     private int width;
     private int height;
     private boolean joystickPressed = false;
@@ -37,7 +40,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         display.getSize(size);
         width = size.x;
         height = size.y;
-        map = new Map(context, width/128, height/128);
+        level = new Level("testLevel");
+        map = new Map(context, level);
+        tileMap = map.getTileMap();
+        screen = new Screen(width, height, tileMap);
         //playerPosition = new Point(150, 150);
 
         setFocusable(true);
@@ -101,7 +107,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         canvas.drawColor(Color.WHITE);
-        map.draw(canvas);
+        screen.draw(canvas, player);
         player.draw(canvas);
         joystick.draw(canvas);
     }

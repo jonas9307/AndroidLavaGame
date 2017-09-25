@@ -10,44 +10,48 @@ import android.graphics.Canvas;
 
 public class Map {
 
-    private int width;
-    private int height;
+
     private SpriteSheet spriteSheet;
     private Tile groundTile;
     private Tile lavaTile;
+    private Tile[] tileList;
+    private Tile[][] tileMap;
+    private Level level;
 
-    private Tile[][] tileList;
-
-    public Map(Context context, int width, int height) {
-        this.width = width;
-        this.height = height;
+    public Map(Context context, Level level) {
+        this.level = level;
         spriteSheet = new SpriteSheet(context, R.raw.spritesheet);
         groundTile = new Tile(spriteSheet.getSprite(0, 0), false);
         lavaTile = new Tile(spriteSheet.getSprite(0, 1), false);
-        initializeTileList();
+        tileList = new Tile[] {groundTile, lavaTile};
+        initializeTileMap();
     }
 
-    private void initializeTileList() {
-        tileList = new Tile[height][width];
+    private void initializeTileMap() {
+        int [][] layout = level.getLayout();
+        int nRows = layout.length;
+        int nCols = layout[0].length;
+        tileMap = new Tile[nRows][nCols];
+        for(int i = 0; i < nRows; i++){
+            for(int j = 0; j < nCols; j++){
+                tileMap[i][j] = tileList[layout[i][j]];
+            }
+        }
+        /*tileMap = new Tile[height][width];
         for (int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
-                tileList[i][j] = lavaTile;
+                tileMap[i][j] = lavaTile;
             }
         }
 
         for (int i = height/4; i < 3*height/4; i++) {
             for(int j = height/4; j < 3*width/4; j++) {
-                tileList[i][j] = groundTile;
+                tileMap[i][j] = groundTile;
             }
-        }
-
+        }*/
     }
 
-    public void draw(Canvas canvas) {
-        for (int i = 0; i < height; i++) {
-            for(int j = 0; j < width; j++) {
-                canvas.drawBitmap(tileList[i][j].getImage(), j*128, i*128, null);
-            }
-        }
+    public Tile[][] getTileMap() {
+        return tileMap;
     }
 }
