@@ -2,6 +2,9 @@ package com.example.jonas.androidlavagame;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.util.Log;
+import android.util.TimingLogger;
 
 /**
  * Created by Alexander on 2017-09-25.
@@ -40,7 +43,7 @@ public class Screen {
 
             if(tileBot > top && tileTop < bot){
                 for(int j = 0; j < nCols; j++) {
-
+                    long startTime = System.nanoTime();
                     int tileLeft = j*128;
                     int tileRight = tileLeft + 128 - 1;
 
@@ -51,7 +54,7 @@ public class Screen {
                             int newTileLeft, newTileTop, newTileWidth, newTileHeight;
 
                             if(tileLeft < left) {
-                                newTileWidth = left - tileLeft;
+                                newTileWidth = 128 - (left - tileLeft);
                                 newTileLeft = 128 - newTileWidth;
                             } else if(tileRight > right) {
                                 newTileWidth = right - tileLeft;
@@ -62,7 +65,7 @@ public class Screen {
                             }
 
                             if(tileTop < top) {
-                                newTileHeight = top - tileTop;
+                                newTileHeight = 128 - (top - tileTop);
                                 newTileTop = 128 - newTileHeight;
                             } else if(tileBot > bot) {
                                 newTileHeight = bot - tileTop;
@@ -71,9 +74,17 @@ public class Screen {
                                 newTileTop = 0;
                                 newTileHeight = 128;
                             }
+                            //Log.d("Test1", String.valueOf((startTime-System.nanoTime())/1000));
+                            //Bitmap tilePart = Bitmap.createBitmap(tileMap[i][j].getImage(), newTileLeft, newTileTop, newTileWidth, newTileHeight); // insert directly in drawBitmap for higher performance
 
-                            Bitmap tilePart = Bitmap.createBitmap(tileMap[i][j].getImage(), newTileLeft, newTileTop, newTileWidth, newTileHeight);
-                            canvas.drawBitmap(tilePart, tileLeft - left + newTileLeft, tileTop - top + newTileTop, null);
+                            //Log.d("Test2", String.valueOf((startTime-System.nanoTime())/1000));
+                            //canvas.drawBitmap(tilePart, tileLeft - left + newTileLeft, tileTop - top + newTileTop, null);
+                            canvas.drawBitmap(tileMap[i][j].getImage(),
+                                    new Rect(newTileLeft, newTileTop, newTileLeft + newTileWidth , newTileTop + newTileHeight),
+                                    new Rect(tileLeft - left + newTileLeft, tileTop - top + newTileTop, tileLeft - left + newTileLeft + newTileWidth + 1, tileTop - top + newTileTop + newTileHeight + 1),
+                                    null);
+
+                            //Log.d("Test3", String.valueOf((startTime-System.nanoTime())/1000));
                         }
                     }
                 //canvas.drawBitmap(tileMap[i][j].getImage(), j*128, i*128, null);
