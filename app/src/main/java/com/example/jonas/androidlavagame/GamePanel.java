@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -43,8 +44,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         tileMap = map.getTileMap();
         screen = new Screen(width, height, tileMap);
         //playerPosition = new Point(150, 150);
-
         setFocusable(true);
+
     }
 
     @Override

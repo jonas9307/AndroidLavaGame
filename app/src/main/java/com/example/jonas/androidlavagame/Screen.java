@@ -17,11 +17,17 @@ public class Screen {
     private int top = 0;
     private int left = 0;
     private Tile[][] tileMap;
-
+    private int bot;
+    private int right;
+    private int nRows;
+    private int nCols;
+    private int newTileLeft, newTileTop, newTileWidth, newTileHeight;
     public Screen(int width, int height, Tile[][] tileMap){
         this.width = width;
         this.height = height;
         this.tileMap = tileMap;
+        nRows = tileMap.length;
+        nCols = tileMap[0].length;
     }
 
     public void draw(Canvas canvas, RectPlayer player) {
@@ -30,11 +36,10 @@ public class Screen {
             1.1 if left of screen, check if on screen
         */
         top = (int)player.getY();
-        int bot = top + height - 1;
+        bot = top + height - 1;
         left = (int)player.getX();
-        int right = left + width - 1;
-        int nRows = tileMap.length;
-        int nCols = tileMap[0].length;
+        right = left + width - 1;
+
 
         for (int i = 0; i < nRows; i++) {
 
@@ -51,7 +56,7 @@ public class Screen {
                         if(tileRight > left && tileLeft < right){
 
                             // what part of the tile to draw?
-                            int newTileLeft, newTileTop, newTileWidth, newTileHeight;
+
 
                             if(tileLeft < left) {
                                 newTileWidth = 128 - (left - tileLeft);
