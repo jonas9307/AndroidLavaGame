@@ -35,9 +35,9 @@ public class Screen {
         1. Check if tile is left of screen
             1.1 if left of screen, check if on screen
         */
-        top = (int)player.getY();
+        top = (int)player.getY() - height/2;
         bot = top + height - 1;
-        left = (int)player.getX();
+        left = (int)player.getX() - width/2;
         right = left + width - 1;
 
 

@@ -1,6 +1,7 @@
 package com.example.jonas.androidlavagame;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -18,10 +19,13 @@ public class RectPlayer implements GameObject{
     private double x, y;
     private static final double MAX_SPEED = 22.0; // pixels per update
 
-    public RectPlayer(int color, int screenWidth, int screenHeight) {
+
+    public RectPlayer(int color, int screenWidth, int screenHeight, int positionX, int positionY) {
         this.color = color;
         this.cx = screenWidth/2;
         this.cy = screenHeight/2;
+        this.x = positionX - screenWidth/2;
+        this.y = positionY - screenHeight/2;
     }
 
     @Override
@@ -48,5 +52,11 @@ public class RectPlayer implements GameObject{
     }
     public double getY() {
         return y;
+    }
+    public double getCX() {
+        return cx;
+    }
+    public double getCY() {
+        return cy;
     }
 }

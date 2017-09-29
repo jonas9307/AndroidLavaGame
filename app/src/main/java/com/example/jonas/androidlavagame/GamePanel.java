@@ -11,6 +11,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Alexander on 2017-07-12.
  */
@@ -26,6 +29,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private int width;
     private int height;
     private boolean joystickPressed = false;
+    private List<Enemy> enemyList = new ArrayList<Enemy>();
 
     public GamePanel(Context context) {
         super(context);
@@ -37,12 +41,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         display.getSize(size);
         width = size.x;
         height = size.y;
-        joystick = new Joystick(300, 300, 100, 50);
-        player = new RectPlayer(Color.rgb(255, 0, 0), width, height);
         level = new Level("testLevel");
         map = new Map(context, level);
         tileMap = map.getTileMap();
         screen = new Screen(width, height, tileMap);
+        player = new RectPlayer(Color.rgb(255, 0, 0), width, height, tileMap[0].length*128/2, tileMap.length*128/2);
+        joystick = new Joystick(300, 300, 100, 50);
+
         //playerPosition = new Point(150, 150);
         setFocusable(true);
 
@@ -100,6 +105,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         player.update();
+
+        if(Enemy.readyToSpawn()){
+            enemyList.add(new Enemy(player));
+        }
+        for (Enemy enemy : enemyList) {
+            enemy.update();
+        }
     }
 
     @Override
@@ -109,5 +121,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         screen.draw(canvas, player);
         player.draw(canvas);
         joystick.draw(canvas);
+        for (Enemy enemy : enemyList) {
+            enemy.draw(canvas);
+        }
     }
 }
